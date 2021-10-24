@@ -10,11 +10,11 @@ webhooks.onAny(({id, name, payload}) => {
     console.log(name);
     if(name === 'create' && config.development) {
         if(payload.ref_type === 'tag' && RegExp('^dev').test(payload.ref)) {
-            deploy.listComposeFiles();
+            deploy.getDevelopmentFiles(payload.repository.clone_url, payload.ref);
         }
     }
     if(config.production && name === "release" && payload.action === 'released') {
-        deploy.listComposeFiles();
+        deploy.getReleaseFiles(payload.release.tarball_url);
     }
 });
 
