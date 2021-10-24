@@ -2,7 +2,7 @@ const http = require('http')
 const { Webhooks, createNodeMiddleware } = require('@octokit/webhooks');
 const config = require('./config.js');
 const webhooks = new Webhooks({
-    secret: process.env.WEBHOOK_SECRET 
+    secret: config.secret 
 })
 
 webhooks.onAny(({id, name, payload}) => {

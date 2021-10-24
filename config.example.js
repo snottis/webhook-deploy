@@ -1,10 +1,10 @@
 const config = {
+    port: process.env.TSS_WEBHOOK_PORT || 3000,
     production: false,
     productionReleasePrefix: 'v',
     development: true,
     developmentTagPrefix: 'dev',
-    productionSecret: process.env.TSS_WEBHOOK_PROD_SECRET || "",
-    developmentSecret: process.env.TSS_WEBHOOK_DEV_SECRET || ""
+    secret: process.env.TSS_WEBHOOK_SECRET
 }
 
 module.exports = config;
