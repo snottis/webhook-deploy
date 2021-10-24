@@ -14,7 +14,7 @@ webhooks.onAny(({id, name, payload}) => {
         }
     }
     if(config.production && name === "release" && payload.action === 'released') {
-        console.log(payload)
+        deploy.listComposeFiles();
     }
 });
 
