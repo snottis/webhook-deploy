@@ -19,7 +19,7 @@ const listComposeFiles = () => {
 const getDevelopmentFiles = (repoUrl, tagRef) => {
     execute('rm -rf ./compose/src');
     execute(`git clone ${repoUrl} ./compose/src`);
-    execute(`git cd ./compose/src && git fetch --all && git checkout tags/${tagRef} && cd ../..`);
+    execute(`cd ./compose/src && git fetch --all && git checkout tags/${tagRef} && cd ../..`);
 }
 
 const getReleaseFiles = (tarUrl) => {
