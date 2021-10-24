@@ -2,7 +2,7 @@ const http = require('http')
 const { Webhooks, createNodeMiddleware } = require('@octokit/webhooks');
 const config = require('./config.js');
 const webhooks = new Webhooks({
-    secret: config.secret 
+    secret: config.secret,
 })
 
 webhooks.onAny(({id, name, payload}) => {
@@ -15,4 +15,4 @@ webhooks.onAny(({id, name, payload}) => {
     }
 });
 
-http.createServer(createNodeMiddleware(webhooks)).listen(config.port)
+http.createServer(createNodeMiddleware(webhooks, {path: "/"})).listen(config.port)
