@@ -7,10 +7,12 @@ const webhooks = new Webhooks({
 
 webhooks.onAny(({id, name, payload}) => {
     console.log(name);
-    if(name === "create" && config.development) {
-        console.log(payload)
+    if(name === 'create' && config.development) {
+        if(payload.ref_type === 'tag' && RegExp('^dev').test(payload.ref)) {
+            console.log(payload)
+        }
     }
-    if(name === "release" && config.production) {
+    if(config.production && name === "release" && payload.action === 'released') {
         console.log(payload)
     }
 });
