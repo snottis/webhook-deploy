@@ -10,16 +10,17 @@ const execute = async (command) => {
         if(stderr)
             console.log('stderr:', stderr)
     })
+    return true;
 }
 
 const listComposeFiles = () => {
-    execute('ls -la compose/')
+    execute('cd compose && ls -la && cd ..')
 }
 
 const getDevelopmentFiles = async (repoUrl, tagRef) => {
     rr('./compose/src', () => console.log('Purged src'));
     await execute(`git clone ${repoUrl} ./compose/src`);
-    await execute(`cd ./compose/src && git fetch --all --tags && git checkout tags/${tagRef} && cd ../..`);
+    await execute(`cd ./compose/src && git fetch --all --tags && git checkout refs/tags/${tagRef} && cd ../..`);
 }
 
 const getReleaseFiles = async (tarUrl) => {
