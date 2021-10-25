@@ -23,7 +23,7 @@ const getDevelopmentFiles = async (repoUrl, tagRef) => {
 }
 
 const getReleaseFiles = async (tarUrl) => {
-    rr.sync('./compose/src', () => console.log('Purged src'));
+    rr('./compose/src', {recursive: true, force: true});
     await execute(`curl ${tarUrl} | tar -xvz - -C ./compose/src`)
 }
 
