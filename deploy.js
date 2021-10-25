@@ -17,13 +17,13 @@ const listComposeFiles = () => {
 }
 
 const getDevelopmentFiles = async (repoUrl, tagRef) => {
-    rr('./compose/src');
+    rr('./compose/src', () => console.log('Purged src'));
     await execute(`git clone ${repoUrl} ./compose/src`);
     await execute(`cd ./compose/src && git fetch --all --tags && git checkout tags/${tagRef} && cd ../..`);
 }
 
 const getReleaseFiles = async (tarUrl) => {
-    rr('./compose/src');
+    rr('./compose/src', () => console.log('Purged src'));
     await execute(`curl ${tarUrl} | tar -xvz - -C ./compose/src`)
 }
 
