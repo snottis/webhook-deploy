@@ -1,8 +1,8 @@
-const { exec } = require("child_process");
+const { execSync } = require("child_process");
 const rr = require('rimraf');
 
-const execute = async (command) => {
-    exec(command, (error, stdout, stderr) => {
+const execute = (command) => {
+    execSync(command, (error, stdout, stderr) => {
         if(error)
             console.log('error:', error)
         if(stdout) 
@@ -10,17 +10,16 @@ const execute = async (command) => {
         if(stderr)
             console.log('stderr:', stderr)
     })
-    return true;
 }
 
 const listComposeFiles = () => {
     execute('cd compose && ls -la && cd ..')
 }
 
-const getDevelopmentFiles = async (repoUrl, tagRef) => {
+const getDevelopmentFiles = (repoUrl, tagRef) => {
     rr('./compose/src', () => console.log('Purged src'));
-    await execute(`git clone ${repoUrl} ./compose/src`);
-    await execute(`cd ./compose/src && git fetch --all --tags && git checkout refs/tags/${tagRef} && cd ../..`);
+    execute(`git clone ${repoUrl} ./compose/src`);
+    execute(`cd ./compose/src && git fetch --all --tags && git checkout refs/tags/${tagRef} && cd ../..`);
 }
 
 const getReleaseFiles = async (tarUrl) => {
