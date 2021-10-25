@@ -1,5 +1,5 @@
 const { exec } = require("child_process");
-const config = require('./config');
+const rr = require('rimraf');
 
 const execute = async (command) => {
     exec(command, (error, stdout, stderr) => {
@@ -17,13 +17,13 @@ const listComposeFiles = () => {
 }
 
 const getDevelopmentFiles = async (repoUrl, tagRef) => {
-    await execute('rm -rf ./compose/src');
+    rr('./compose/src');
     await execute(`git clone ${repoUrl} ./compose/src`);
-    await execute(`cd ./compose/src && git fetch --all && git checkout tags/${tagRef} && cd ../..`);
+    await execute(`cd ./compose/src && git fetch --all --tags && git checkout tags/${tagRef} && cd ../..`);
 }
 
 const getReleaseFiles = async (tarUrl) => {
-    await execute('rm -rf ./compose/src');
+    rr('./compose/src');
     await execute(`curl ${tarUrl} | tar -xvz - -C ./compose/src`)
 }
 
