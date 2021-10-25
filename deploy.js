@@ -2,7 +2,7 @@ const { execSync } = require("child_process");
 const rr = require('fs').rmSync
 
 const execute = async (command) => {
-    execSync(command, (error, stdout, stderr) => {
+    return execSync(command, (error, stdout, stderr) => {
         if(error)
             console.log('error:', error)
         if(stdout) 
@@ -19,7 +19,7 @@ const listComposeFiles = () => {
 const getDevelopmentFiles = async (repoUrl, tagRef) => {
     rr('./compose/src', {recursive: true, force: true});
     await execute(`git clone ${repoUrl} ./compose/src`);
-    await execute(`cd ./compose/src && git fetch --all --tags && git checkout refs/tags/${tagRef} && cd ../..`);
+    await execute(`cd ./compose/src && git fetch --all --tags && git checkout tags/${tagRef} && cd ../..`);
 }
 
 const getReleaseFiles = async (tarUrl) => {
