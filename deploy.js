@@ -24,7 +24,7 @@ const getDevelopmentFiles = async (repoUrl, tagRef) => {
 
 const getReleaseFiles = async (tarUrl) => {
     rr('./compose/src', {recursive: true, force: true});
-    await execute(`mkdir ./compose/src && curl -L ${tarUrl} | tar -xvz  -C ./compose/src`)
+    await execute(`mkdir ./compose/src && curl -L ${tarUrl} | tar -xvz --strip-components=1  -C ./compose/src`)
 }
 
 module.exports = {
