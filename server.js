@@ -6,15 +6,23 @@ const webhooks = new Webhooks({
     secret: config.secret,
 })
 
-webhooks.onAny(async ({id, name, payload}) => {
-    if(name === 'create' && config.development) {
+
+webhooks.on('create', async ({id, name, payload}) => {
+    console.log('Received create event');
+})
+webhooks.on('create', async ({id, name, payload}) => {
+    if(config.development) {
         if(payload.ref_type === 'tag' && RegExp('^dev-').test(payload.ref)) {
-            return deploy.getDevelopmentFiles(payload.repository.clone_url, payload.ref);
+            deploy.getDevelopmentFiles(payload.repository.clone_url, payload.ref);
         }
     }
-    if(config.production && name === "release" && payload.action === 'released') {
-        return deploy.getReleaseFiles(payload.release.tarball_url, payload.release.name);
-    }
-});
+})
+
+webhooks.on('release.released', async ({id, name, payload}) => {
+    console.log('Received release.released event');
+})
+webhooks.on('release.released', async ({id, name, payload}) => {
+    deploy.getReleaseFiles(payload.release.tarball_url, payload.release.name);
+})
 
 module.exports = http.createServer(createNodeMiddleware(webhooks, {path: "/"}))
