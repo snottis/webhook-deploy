@@ -7,14 +7,13 @@ const webhooks = new Webhooks({
 })
 
 webhooks.onAny(async ({id, name, payload}) => {
-    console.log(name);
     if(name === 'create' && config.development) {
         if(payload.ref_type === 'tag' && RegExp('^dev-').test(payload.ref)) {
-            deploy.getDevelopmentFiles(payload.repository.clone_url, payload.ref);
+            return deploy.getDevelopmentFiles(payload.repository.clone_url, payload.ref);
         }
     }
     if(config.production && name === "release" && payload.action === 'released') {
-        deploy.getReleaseFiles(payload.release.tarball_url, payload.release.name);
+        return deploy.getReleaseFiles(payload.release.tarball_url, payload.release.name);
     }
 });
 

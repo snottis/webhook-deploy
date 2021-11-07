@@ -22,7 +22,7 @@ const getDevelopmentFiles = async (repoUrl, tagRef) => {
     console.log('Fetch all:')
     await execute(`cd ./compose/src && git fetch --all --tags && git checkout 'tags/${tagRef}' && cd ../..`);
     console.log('Deploy dev:')
-    execute(`cd ./compose && bash deploy.sh '${tagRef}'`)
+    await execute(`cd ./compose && bash deploy.sh '${tagRef}'`)
 }
 
 const getReleaseFiles = async (tarUrl, version) => {
@@ -30,7 +30,7 @@ const getReleaseFiles = async (tarUrl, version) => {
     console.log('Fetch release:')
     await execute(`mkdir ./compose/src && curl -L '${tarUrl}' | tar -xvz --strip-components=1  -C ./compose/src`)
     console.log('Deploy release:')
-    execute(`cd ./compose && bash deploy.sh '${version}'`)
+    await execute(`cd ./compose && bash deploy.sh '${version}'`)
 }
 
 module.exports = {
