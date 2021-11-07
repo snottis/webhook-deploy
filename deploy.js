@@ -19,12 +19,14 @@ const listComposeFiles = () => {
 const getDevelopmentFiles = async (repoUrl, tagRef) => {
     rr('./compose/src', {recursive: true, force: true});
     await execute(`git clone ${repoUrl} ./compose/src`);
-    await execute(`cd ./compose/src && git fetch --all --tags && git checkout tags/${tagRef} && cd ../..`);
+    await execute(`cd ./compose/src && git fetch --all --tags && git checkout 'tags/${tagRef}' && cd ../..`);
+    await execute(`cd ./compose && bash deploy.sh '${tagRef}'`)
 }
 
-const getReleaseFiles = async (tarUrl) => {
+const getReleaseFiles = async (tarUrl, version) => {
     rr('./compose/src', {recursive: true, force: true});
-    await execute(`mkdir ./compose/src && curl -L ${tarUrl} | tar -xvz --strip-components=1  -C ./compose/src`)
+    await execute(`mkdir ./compose/src && curl -L '${tarUrl}' | tar -xvz --strip-components=1  -C ./compose/src`)
+    await execute(`cd ./compose && bash deploy.sh '${version}'`)
 }
 
 module.exports = {

@@ -4,7 +4,7 @@ const config = {
     productionReleasePrefix: 'v',
     development: true,
     developmentTagPrefix: 'dev',
-    secret: process.env.TSS_WEBHOOK_SECRET
+    secret: process.env.TSS_WEBHOOK_SECRET, // You can also replace this with the secret
 }
 
 module.exports = config;
