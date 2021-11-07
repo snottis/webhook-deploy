@@ -13,7 +13,7 @@ webhooks.on('create', async ({id, name, payload}) => {
 webhooks.on('create', async ({id, name, payload}) => {
     if(config.development) {
         if(payload.ref_type === 'tag' && RegExp('^dev-').test(payload.ref)) {
-            deploy.getDevelopmentFiles(payload.repository.clone_url, payload.ref);
+            await deploy.getDevelopmentFiles(payload.repository.clone_url, payload.ref);
         }
     }
 })
@@ -22,7 +22,7 @@ webhooks.on('release.released', async ({id, name, payload}) => {
     console.log('Received release.released event');
 })
 webhooks.on('release.released', async ({id, name, payload}) => {
-    deploy.getReleaseFiles(payload.release.tarball_url, payload.release.name);
+    await deploy.getReleaseFiles(payload.release.tarball_url, payload.release.name);
 })
 
 module.exports = http.createServer(createNodeMiddleware(webhooks, {path: "/"}))
