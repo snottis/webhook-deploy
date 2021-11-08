@@ -18,20 +18,20 @@ const listComposeFiles = () => {
 }
 
 const getDevelopmentFiles = async (repoUrl, tagRef) => {
-    rr(`${config.srcPath}/src`, {recursive: true, force: true});
-    await execute(`git clone ${repoUrl} ${config.srcPath}/src`);
+    rr(`${config.appPath}/src`, {recursive: true, force: true});
+    await execute(`git clone ${repoUrl} ${config.appPath}/src`);
     console.log('Fetch all:')
-    await execute(`cd ${config.srcPath} && git fetch --all --tags && git checkout 'tags/${tagRef}'`);
+    await execute(`cd ${config.appPath} && git fetch --all --tags && git checkout 'tags/${tagRef}'`);
     console.log('Deploy dev:')
-    await execute(`cd ${config.srcPath} && bash deploy.sh '${tagRef}'`)
+    await execute(`cd ${config.appPath} && bash deploy.sh '${tagRef}'`)
 }
 
 const getReleaseFiles = async (tarUrl, version) => {
-    rr(`${config.srcPath}/src`, {recursive: true, force: true});
+    rr(`${config.appPath}/src`, {recursive: true, force: true});
     console.log('Fetch release:')
-    await execute(`mkdir ${config.srcPath}/src && curl -L '${tarUrl}' | tar -xvz --strip-components=1  -C ${config.srcPath}/src`)
+    await execute(`mkdir ${config.appPath}/src && curl -L '${tarUrl}' | tar -xvz --strip-components=1  -C ${config.appPath}/src`)
     console.log('Deploy release:')
-    await execute(`cd ${config.srcPath} && bash deploy.sh '${version}'`)
+    await execute(`cd ${config.appPath} && bash deploy.sh '${version}'`)
 }
 
 module.exports = {
