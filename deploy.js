@@ -21,7 +21,7 @@ const getDevelopmentFiles = async (repoUrl, tagRef) => {
     rr(`${config.appPath}/src`, {recursive: true, force: true});
     await execute(`git clone ${repoUrl} ${config.appPath}/src`);
     console.log('Fetch all:')
-    await execute(`cd ${config.appPath} && git fetch --all --tags && git checkout 'tags/${tagRef}'`);
+    await execute(`cd ${config.appPath}/src && git fetch --all --tags && git checkout 'tags/${tagRef}'`);
     console.log('Deploy dev:')
     await execute(`cd ${config.appPath} && bash deploy.sh '${tagRef}'`)
 }
