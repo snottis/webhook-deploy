@@ -1,5 +1,6 @@
 const config = {
     port: process.env.TSS_WEBHOOK_PORT || 3000,
+    appPath: 'compose',
     production: false,
     productionReleasePrefix: 'v',
     development: true,

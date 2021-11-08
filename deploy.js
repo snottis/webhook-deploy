@@ -1,5 +1,6 @@
 const { execSync } = require("child_process");
 const rr = require('fs').rmSync
+const config = require('./config')
 
 const execute = async (command) => {
     return execSync(command, (error, stdout, stderr) => {
@@ -17,20 +18,20 @@ const listComposeFiles = () => {
 }
 
 const getDevelopmentFiles = async (repoUrl, tagRef) => {
-    rr('./compose/src', {recursive: true, force: true});
-    await execute(`git clone ${repoUrl} ./compose/src`);
+    rr(`${config.srcPath}/src`, {recursive: true, force: true});
+    await execute(`git clone ${repoUrl} ${config.srcPath}/src`);
     console.log('Fetch all:')
-    await execute(`cd ./compose/src && git fetch --all --tags && git checkout 'tags/${tagRef}' && cd ../..`);
+    await execute(`cd ${config.srcPath} && git fetch --all --tags && git checkout 'tags/${tagRef}'`);
     console.log('Deploy dev:')
-    await execute(`cd ./compose && bash deploy.sh '${tagRef}'`)
+    await execute(`cd ${config.srcPath} && bash deploy.sh '${tagRef}'`)
 }
 
 const getReleaseFiles = async (tarUrl, version) => {
-    rr('./compose/src', {recursive: true, force: true});
+    rr(`${config.srcPath}/src`, {recursive: true, force: true});
     console.log('Fetch release:')
-    await execute(`mkdir ./compose/src && curl -L '${tarUrl}' | tar -xvz --strip-components=1  -C ./compose/src`)
+    await execute(`mkdir ${config.srcPath}/src && curl -L '${tarUrl}' | tar -xvz --strip-components=1  -C ${config.srcPath}/src`)
     console.log('Deploy release:')
-    await execute(`cd ./compose && bash deploy.sh '${version}'`)
+    await execute(`cd ${config.srcPath} && bash deploy.sh '${version}'`)
 }
 
 module.exports = {
