@@ -8,6 +8,7 @@ import (
 	"net/http"
 
 	"github.com/google/go-github/v40/github"
+	"github.com/tidwall/gjson"
 )
 
 // This function handles the webhook events
@@ -21,6 +22,12 @@ func handleWebhook(w http.ResponseWriter, r *http.Request) {
 	}
 	defer r.Body.Close()
 	// Then we parse the webhook event
+	if github.WebHookType(r) != "registry_package" {
+		log.Println("Not a package event!")
+		return
+	}
+	data := gjson.GetBytes(payload, "action").Get("registry_package")
+	log.Println(data)
 	event, err := github.ParseWebHook(github.WebHookType(r), payload)
 	if err != nil {
 		// If we cant parse it, log error and end.
