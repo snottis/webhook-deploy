@@ -33,11 +33,13 @@ func handleWebhook(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	action, tag, url := parseRegistryPackageEvent(payload)
-	if !isTagLegit(tag) && action != "published" {
+	if (!isTagLegit(tag) && action != "published") {
 		log.Printf("Will not install tag: %s\n", tag)
 		return
+	} else {
+		go deploy(url)
 	}
-	go deploy(url)
+	
 }
 
 
@@ -45,10 +47,8 @@ func main() {
 	log.Println("server started")
 	// run handleWebhook on requests to /webhook
 	http.HandleFunc("/webhook", handleWebhook)
-	err := http.ListenAndServeTLS(port, certPath, keyPath, nil)
+	err := http.ListenAndServeTLS(":"+port, certPath, keyPath, nil)
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
 	}
-	// Start server
-	log.Fatal(http.ListenAndServe(":8080", nil))
 }
