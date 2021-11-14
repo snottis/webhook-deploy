@@ -33,7 +33,7 @@ func handleWebhook(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	action, tag, url := parseRegistryPackageEvent(payload)
-	if (!isTagLegit(tag) && action != "published") {
+	if (!isTagLegit(tag) || action != "published") {
 		log.Printf("Will not install tag: %s\n", tag)
 		return
 	} else {
