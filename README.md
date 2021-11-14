@@ -10,3 +10,4 @@ Few environment variables need to be set for this to function:
 2. *WEBHOOK_ACCEPTED_TAGS* contains comma-separated (,) list of *RegExp* matching accepted tags. For example, WEBHOOK_ACCEPTED_TAGS=^dev-,v[0-9].[0-9].[0.9] would match tags starting with _dev_ and all semantic versioning tags (v1.0.2 etc).
 3. *WEBHOOK_TLS_KEY* path to TLS-key (to support https)
 4. *WEBHOOK_TLS_CERT* path to TLS-cert (for https also)
+5. *WEBHOOK_PORT* define port on which to listen for connections.

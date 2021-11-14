@@ -6,15 +6,18 @@ package main
 import (
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/google/go-github/v40/github"
-	"github.com/tidwall/gjson"
 )
+
+var secret string = os.Getenv("WEBHOOK_SECRET")
 
 // This function handles the webhook events
 func handleWebhook(w http.ResponseWriter, r *http.Request) {
 	// First we validate payload with preshared key
-	payload, err := github.ValidatePayload(r, []byte("devsecret"))
+	log.Println("Event received")
+	payload, err := github.ValidatePayload(r, []byte(secret))
 	if err != nil {
 		// If keys don't match or other error happens we stop.
 		log.Printf("error reading request body: err=%s\n", err)
@@ -26,21 +29,12 @@ func handleWebhook(w http.ResponseWriter, r *http.Request) {
 		log.Println("Not a package event!")
 		return
 	}
-	data := gjson.GetBytes(payload, "action").Get("registry_package")
-	log.Println(data)
-	event, err := github.ParseWebHook(github.WebHookType(r), payload)
-	if err != nil {
-		// If we cant parse it, log error and end.
-		log.Printf("could not parse webhook: err=%s\n", err)
+	action, tag, url := parseRegistryPackageEvent(payload)
+	if !isTagLegit(tag) && action != "published" {
+		log.Printf("Will not install tag: %s\n", tag)
 		return
 	}
-	// Do the magic according to event type
-	switch e := event.(type) {
-	case *github.CreateEvent:
-		log.Println(*e)
-	case *github.PackageEvent:
-		log.Println(*e)
-	}
+	go deploy(url)
 }
 
 
