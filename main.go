@@ -46,7 +46,7 @@ func handleWebhook(w http.ResponseWriter, r *http.Request) {
 func main() {
 	log.Println("server started")
 	// run handleWebhook on requests to /webhook
-	http.HandleFunc("/webhook", handleWebhook)
+	http.HandleFunc("/", handleWebhook)
 	err := http.ListenAndServeTLS(":"+port, certPath, keyPath, nil)
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
