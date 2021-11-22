@@ -15,6 +15,7 @@ var secret string = os.Getenv("WEBHOOK_SECRET")
 var certPath string = os.Getenv("WEBHOOK_TLS_CERT")
 var keyPath string = os.Getenv("WEBHOOK_TLS_KEY")
 var port string = os.Getenv("WEBHOOK_PORT")
+var urlPath string = os.Getenv("WEBHOOK_PATH")
 
 // This function handles the webhook events
 func handleWebhook(w http.ResponseWriter, r *http.Request) {
@@ -46,7 +47,7 @@ func handleWebhook(w http.ResponseWriter, r *http.Request) {
 func main() {
 	log.Println("server started")
 	// run handleWebhook on requests to /webhook
-	http.HandleFunc("/", handleWebhook)
+	http.HandleFunc("/"+urlPath, handleWebhook)
 	err := http.ListenAndServeTLS(":"+port, certPath, keyPath, nil)
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
