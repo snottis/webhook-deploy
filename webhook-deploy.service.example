@@ -6,7 +6,7 @@ ExecStart=/path/to/webhook-deploy
 WorkingDirectory=/path/where/deploy.sh/exists
 Restart=always
 Environment="WEBHOOK_SECRET=yoursecrethere"
-Environment="WEBHOOK_ACCEPTED_TAGS=^dev-,^v(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$"
+EnvironmentFile=/etc/systemd/system/webhook-deploy.env
 Environment="WEBHOOK_TLS_KEY=./path/to/relative/to/working/directory/privkey.pem"
 Environment="WEBHOOK_TLS_CERT=./path/to/relative/to/working/directory/fullchain.pem"
 Environment="WEBHOOK_PORT=8443"
